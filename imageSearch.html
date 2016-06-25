@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Image Search</title>
+    <link rel="shortcut icon" href="https://pixabay.com/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/yahoo/pure-release/v0.6.0/pure-min.css">
+    <style>
+        body { margin: 0; padding: 0; border: 0; min-width: 320px; color: #777; }
+        html, button, input, select, textarea, .pure-g [class *= "pure-u"] { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1.02em; }
+        p, td { line-height: 1.5; }
+        ul { padding: 0 0 0 20px; }
+
+        th { background: #eee; white-space: nowrap; }
+        th, td { padding: 10px; text-align: left; vertical-align: top; font-size: .9em; font-weight: normal; border-right: 1px solid #fff; }
+        td:first-child { white-space: nowrap; color: #008000; width: 1%; font-style: italic; }
+
+        h1, h2, h3 { color: #4b4b4b; font-family: "Source Sans Pro", sans-serif; font-weight: 300; margin: 0 0 1.2em; }
+        h1 { font-size: 4.5em; color: #1f8dd6; margin: 0 0 .4em; }
+        h2 { font-size: 2em; color: #636363; }
+        h3 { font-size: 1.8em; color: #4b4b4b; margin: 1.8em 0 .8em }
+        h4 { font: bold 1em sans-serif; color: #636363; margin: 4em 0 1em; }
+        a { color: #4e99c7; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        p, pre { margin: 0 0 1.2em; }
+        ::selection { color: #fff; background: #328efd; }
+        ::-moz-selection { color: #fff; background: #328efd; }
+
+        @media (max-width:480px) {
+            h1 { font-size: 3em; }
+            h2 { font-size: 1.8em; }
+            h3 { font-size: 1.5em; }
+            td:first-child { white-space: normal; }
+        }
+
+        .inline-code { padding: 1px 5px; background: #eee; border-radius: 2px; }
+        pre { padding: 15px 10px; font-size: .9em; color: #555; background: #edf3f8; }
+        pre i { color: #aaa; } /* comments */
+        pre b { font-weight: normal; color: #cf4b25; } /* strings */
+        pre em { color: #0c59e9; } /* numeric */
+
+        /* Pure CSS */
+        .pure-button { margin: 5px 0; text-decoration: none !important; }
+        .button-lg { margin: 5px 0; padding: .65em 1.6em; font-size: 105%; }
+
+        input[type="text"] { border-radius: 0 !important; }
+    </style>
+    <link rel="stylesheet" href="css/jquery.auto-complete.css">
+    <link rel="stylesheet" href="css/jquery.flex-images.css">
+</head>
+<body>
+    <div style="max-width:900px;padding:0 10px;margin:40px auto;text-align:center">
+        <h1>Search Images</h1>
+    </div>
+
+    <form onsubmit="$('#hero-demo').blur();return false;" class="pure-form" id="searchForm" style="border-top: 1px solid #eee;border-bottom:1px solid #eee;background:#fafafa;margin:30px 0;padding:20px 10px;text-align:center">
+        <input id="hero-demo" autofocus type="text" name="q" placeholder="Search ..." style="width:100%;max-width:600px;outline:0">
+    </form>
+
+    <div style="max-width:900px;margin:auto;padding:0 10px">
+        <h3>Search Results</h3>
+    </div>
+
+    <div style="max-width:908px;margin:auto;padding:0 10px 10px">
+        <div id="demo1" class="flex-images">
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="js/jquery.auto-complete.js"></script>
+    <script src="js/jquery.flex-images.js"></script>
+    <script>
+
+        var API_KEY_PIXABAY = 'your api key for PixaBay';
+		var API_KEY_UNSPLASH = 'your api key for unsplash';
+		var API_KEY_SHUTTERSTOCK = 'your api key for shutterstock';
+
+        $('#searchForm').submit(function(){
+            var searchKey = $('#hero-demo').val();
+            var url_pixabay = "https://pixabay.com/api/?key="+API_KEY_PIXABAY+"&q="+searchKey;
+			var url_unsplash = "https://unsplash.com/api/?key="+API_KEY_UNSPLASH+"&q="+searchKey;
+			var url_shutterstock = "https://shutterstock.com/api/?key="+API_KEY_SHUTTERSTOCK+"&q="+searchKey;
+           
+            $(".flex-images").empty();
+			
+            $.getJSON(url_pixabay, function(data){
+                if (parseInt(data.totalHits) > 0)
+                  $.each(data.hits, function(i, hit){
+                    $( ".flex-images" ).append( "<div class='item'><img src="+hit.previewURL+"></div>" );
+                     console.log(hit.pageURL);
+                   });
+                else
+                  console.log('No hits');
+            });
+			
+            $.getJSON(url_unsplash, function(data){
+                if (parseInt(data.totalHits) > 0)
+                  $.each(data.hits, function(i, hit){
+                    $( ".flex-images" ).append( "<div class='item'><img src="+hit.previewURL+"></div>" );
+                     console.log(hit.pageURL);
+                   });
+                else
+                  console.log('No hits');
+            });
+
+            $.getJSON(url_shutterstock, function(data){
+                if (parseInt(data.totalHits) > 0)
+                  $.each(data.hits, function(i, hit){
+                    $( ".flex-images" ).append( "<div class='item'><img src="+hit.previewURL+"></div>" );
+                     console.log(hit.pageURL);
+                   });
+                else
+                  console.log('No hits');
+            });
+			
+			
+        });
+
+        $(function(){
+            $('#hero-demo').autoComplete({
+                minChars: 1,
+                source: function(term, suggest){
+                    term = term.toLowerCase();
+                    var choices = ['ActionScript', 'AppleScript', 'Asp', 'Assembly', 'BASIC', 'Batch', 'C', 'C++', 'CSS', 'Clojure', 'COBOL', 'ColdFusion', 'Erlang', 'Fortran', 'Groovy', 'Haskell', 'HTML', 'Java', 'JavaScript', 'Lisp', 'Perl', 'PHP', 'PowerShell', 'Python', 'Ruby', 'Scala', 'Scheme', 'SQL', 'TeX', 'XML'];
+                    var suggestions = [];
+                    for (i=0;i<choices.length;i++)
+                        if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                    suggest(suggestions);
+                }
+            });
+            $('#advanced-demo').autoComplete({
+                minChars: 0,
+                source: function(term, suggest){
+                    term = term.toLowerCase();
+                    var choices = [['Australia', 'au'], ['Austria', 'at'], ['Brasil', 'br'], ['Bulgaria', 'bg'], ['Canada', 'ca'], ['China', 'cn'], ['Czech Republic', 'cz'], ['Denmark', 'dk'], ['Finland', 'fi'], ['France', 'fr'], ['Germany', 'de'], ['Hungary', 'hu'], ['India', 'in'], ['Italy', 'it'], ['Japan', 'ja'], ['Netherlands', 'nl'], ['Norway', 'no'], ['Portugal', 'pt'], ['Romania', 'ro'], ['Russia', 'ru'], ['Spain', 'es'], ['Swiss', 'ch'], ['Turkey', 'tr'], ['USA', 'us']];
+                    var suggestions = [];
+                    for (i=0;i<choices.length;i++)
+                        if (~(choices[i][0]+' '+choices[i][1]).toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                    suggest(suggestions);
+                },
+                renderItem: function (item, search){
+                    search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                    var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
+                    return '<div class="autocomplete-suggestion" data-langname="'+item[0]+'" data-lang="'+item[1]+'" data-val="'+search+'"><img src="img/'+item[1]+'.png"> '+item[0].replace(re, "<b>$1</b>")+'</div>';
+                },
+                onSelect: function(e, term, item){
+                    console.log('Item "'+item.data('langname')+' ('+item.data('lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter or tab' : 'mouse click')+'.');
+                    $('#advanced-demo').val(item.data('langname')+' ('+item.data('lang')+')');
+                }
+            });
+        });
+
+        if (~window.location.href.indexOf('http')) {
+            (function() {var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;po.src = 'https://apis.google.com/js/plusone.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);})();
+            (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=114593902037957";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+            $('#github_social').html('\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-autoComplete&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-autoComplete&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+            ');
+        }
+    </script>
+
+    <script>
+        $('#demo1').flexImages({rowHeight: 140});
+
+        if (~window.location.href.indexOf('http')) {
+            (function() {var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;po.src = 'https://apis.google.com/js/plusone.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);})();
+            (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=114593902037957";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+            $('#github_social').html('\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-flexImages&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+                <iframe style="float:left;margin-right:15px" src="//ghbtns.com/github-btn.html?user=Pixabay&repo=jQuery-flexImages&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>\
+            ');
+        }
+    </script>
+
+</body>
+</html>

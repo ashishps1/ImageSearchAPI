@@ -1,0 +1,1 @@
+This is an API to search images from PIXABAY , UNSPLASH  and SHUTTERSTOCK. Need to develop a heuristic to give the best search results possible.
